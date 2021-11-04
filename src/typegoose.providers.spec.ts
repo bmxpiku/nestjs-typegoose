@@ -8,7 +8,6 @@ import {
 } from '@typegoose/typegoose';
 import mongoose from 'mongoose';
 import { Connection } from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { DEFAULT_DB_CONNECTION_NAME } from './typegoose.constants';
 import {
   convertToTypegooseClassWithOptions,
@@ -16,7 +15,7 @@ import {
 } from './typegoose.providers';
 import any = jasmine.any;
 
-let mongod: MongoMemoryServer;
+const mongoUri = 'mongodb://localhost:27017/test';
 
 @ModelOptions({ options: { allowMixed: Severity.ALLOW } })
 class MockUser {
@@ -43,16 +42,11 @@ describe('createTypegooseProviders', () => {
   let connection: Connection;
 
   beforeAll(async () => {
-    jest.setTimeout(120000);
-
-    mongod = await MongoMemoryServer.create();
-
-    connection = await mongoose.createConnection(mongod.getUri(), {});
+    connection = await mongoose.createConnection(mongoUri, {});
   });
 
   afterAll(async () => {
     await mongoose.connection.close();
-    await mongod.stop();
   });
 
   describe('setModelForClass', () => {
@@ -109,8 +103,6 @@ describe('createTypegooseProviders', () => {
   });
 
   it('should create typegoose providers from models', () => {
-    jest.setTimeout(30000);
-
     const models = [
       {
         typegooseClass: MockUser,
@@ -146,8 +138,6 @@ describe('createTypegooseProviders', () => {
   }, 15000);
 
   it('should create typegoose providers from models with discriminators', () => {
-    jest.setTimeout(30000);
-
     const customDiscriminatorId = 'extra';
     const models = [
       {

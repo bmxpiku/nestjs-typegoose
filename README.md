@@ -1,5 +1,7 @@
-# nestjs-typegoose
+# nestgoose
 
+
+Forked from nestjs-typegoose
 [![NPM](https://nodei.co/npm/nestjs-typegoose.png)](https://nodei.co/npm/nestjs-typegoose/)
 
 [![npm version](https://badge.fury.io/js/nestjs-typegoose.svg)](https://badge.fury.io/js/nestjs-typegoose)

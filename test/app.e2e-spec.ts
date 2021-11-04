@@ -9,17 +9,11 @@ import {
 } from '@nestjs/common';
 import { getModelToken, InjectModel, TypegooseModule } from '../src';
 import { prop } from '@typegoose/typegoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 
-let mongod: MongoMemoryServer;
-let mongoUri: string;
+const mongoUri = 'mongodb://localhost:27017/test';
 let app: INestApplication;
 
 beforeAll(async () => {
-  mongod = await MongoMemoryServer.create();
-
-  mongoUri = mongod.getUri();
-
   const moduleFixture = await Test.createTestingModule({
     imports: [MockApp, MockSubModule],
   }).compile();
@@ -28,16 +22,12 @@ beforeAll(async () => {
   await app.init();
 });
 
-afterAll(() => mongod.stop());
-
 @Module({
   imports: [
     TypegooseModule.forRootAsync({
       useFactory: () => {
         return {
           uri: mongoUri,
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
         };
       },
     }),

@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, flatten, Module } from '@nestjs/common';
 import { TypegooseCoreModule } from './typegoose-core.module';
 import {
   convertToTypegooseClassWithOptions,
@@ -60,4 +60,22 @@ export class TypegooseModule {
       exports: providers,
     };
   }
+
+  // static forFeatureAsync(
+  //   factories: (TypegooseClass | TypegooseClassWithOptions)[],
+  //   connectionName?: string,
+  // ): DynamicModule {
+  //   const convertedModels = factories.map((model) =>
+  //     convertToTypegooseClassWithOptions(model),
+  //   );
+  //   const providers = createTypegooseProviders(connectionName, convertedModels);
+  //   const imports = factories.map((factory) => factory.imports || []);
+  //   const uniqImports = new Set(flatten(imports));
+  //   return {
+  //     module: TypegooseModule,
+  //     imports: [...uniqImports],
+  //     providers,
+  //     exports: providers,
+  //   };
+  // }
 }
